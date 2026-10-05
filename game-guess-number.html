@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Міні-гра: Вгадай число</title>
+    <style>
+        body{ font-family: Arial, sans-serif;
+            background-color: azure;
+            margin: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;}
+
+        .card {background-color: #ffffff;
+            border: 1px solid #e2e8f0;
+            border-radius: 12px;
+            padding: 24px;
+            width: 100%;
+            max-width: 480px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+            box-sizing: border-box;}
+
+        .card h3 {margin-top: 0;
+            font-size: 20px;}
+
+        .card p {color: #333333;
+            font-size: 14px;}
+
+        .input {display: flex;
+            gap: 8px;
+            margin: 16px 0;}
+
+        .input input {flex: 1;
+            padding: 8px 12px;
+            font-size: 14px;
+            border: 1px solid #ccc;
+            border-radius: 6px;
+            outline: none;}
+
+        .input button {padding: 8px 16px;
+            font-size: 14px;
+            border-radius: 6px;
+            cursor: pointer;}
+
+        #btnCheck {background-color: #26c568;
+            color: #ffffff;
+            border: none;}
+
+        #btnReset {background-color: #eceff1;
+            color: #2f2f2ff4;
+            border: 1px solid #cfd8dc;}
+        
+        .result {border: 1px dashed #b0bec5;
+            border-radius: 6px;
+            padding: 12px;
+            min-height: 20px;
+            margin-bottom: 12px;
+            font-size: 14px;
+            color: #333333;}
+
+        #count {margin: 0;
+            font-size: 14px;
+            color: #555555;}
+        
+    </style>
+</head>
+<body>
+    <div class="card">
+        <h3>Міні-гра: Вгадай число</h3>
+        <p>Компютер загадав число від <b>1</b> до <b>100</b>. Введіть вашу спробу.</p>
+        <div class="input">
+            <input type="number" id = "input" min = "1" max = "100"> 
+            <button id = "btnCheck">Спробувати</button>
+            <button id = "btnReset">Перезапуск</button>
+        </div>
+        <div id = "result" class="result"></div>
+        <p id = "count">Спроб: 0</p>
+    </div>
+
+    <script>
+        let target_num = Math.floor(Math.random() * 100) + 1;
+        let count_ = 0;
+
+        const input = document.getElementById('input');
+        const btnCheck = document.getElementById('btnCheck');
+        const btnReset = document.getElementById('btnReset');
+        const result = document.getElementById('result');
+        const count = document.getElementById('count');
+
+        input.addEventListener('keydown', function(event) {
+            if (event.key === 'Enter') {
+                btnCheck.click();
+            }
+        });
+
+        btnCheck.addEventListener('click', function() {
+            const user_num = Number(input.value);
+
+            if(!input.value){
+                result.textContent = "Введіть число"
+                result.style.borderColor = "#e74c3c";
+                return;
+            }
+
+            if(user_num >= 0 && user_num <= 100){
+                count_++;
+                count.textContent = "Спроб: " + count_;
+
+                if(user_num < target_num){
+                    result.textContent = "Число замале";
+                    result.style.borderColor = "#e74c3c";
+                } else if(user_num > target_num) {
+                    result.textContent = "Число завелике";
+                    result.style.borderColor = "#e74c3c";
+                } else {
+                    result.textContent = "Вітаю! Ви вгадали число " + target_num + " за " + count_ + " спроб." ;
+                    input.disabled = true;
+                    btnCheck.disabled = true;
+                    result.style.borderColor = "#27ae60"
+                }
+            } else {
+                result.textContent = "Введіть число від 0 до 100"
+                result.style.borderColor = "#e74c3c";
+            }
+
+            input.value = "";
+            input.focus();
+            
+        });
+
+        btnReset.addEventListener('click', function(){
+            target_num = Math.floor(Math.random() * 100) + 1;
+            count_ = 0;
+            input.value = '';
+            result.textContent = '';
+            count.textContent = 'Спроб: 0';
+            result.style.borderColor = "#b0bec5";
+            input.disabled = false;
+            btnCheck.disabled = false;
+            input.focus();
+        })
+    </script>
+</body>
+</html>
